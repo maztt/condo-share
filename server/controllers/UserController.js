@@ -1,5 +1,7 @@
 const User = require('../models/User')
 
+const bcrypt = require('bcrypt')
+
 module.exports = class UserController {
   static async register(req, res) {
     const { name, email, password, confirmpassword, phone, block, apartment } =
@@ -61,7 +63,7 @@ module.exports = class UserController {
       return
     }
 
-    
+    // To check if user is available
     const userExists = await User.findOne({
       email: email
     })
@@ -69,6 +71,32 @@ module.exports = class UserController {
     if (userExists) {
       res.status(422).json({
         message: 'This user is already registered to our database. Try other email.'
+      })
+    }
+
+    // To encrypt the password
+    const salt = await bcrypt.genSalt(12)
+    const hashedPassword = await bcrypt.hashSync(password, salt)
+
+    // To create a new user
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      phone,
+      block,
+      apartment
+    })
+
+    try {
+      const newUser = await user.save()
+      res.status(201).json({
+        message: `User ${newUser.name} has been created!`,
+        newUser
+      })
+    } catch (err) {
+      res.status(500).json({
+        message: err
       })
     }
   }
