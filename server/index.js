@@ -16,5 +16,9 @@ app.use(cors({
 // PUBLIC handler
 app.use(express.static('public'))
 
+// ROUTES
+const userRoutes = require('./routes/userRoutes')
+
+app.use('/users', userRoutes)
 
 app.listen(port)
