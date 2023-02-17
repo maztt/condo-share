@@ -2,6 +2,8 @@ const User = require('../models/User')
 
 const bcrypt = require('bcrypt')
 
+const createUserToken = require('../helpers/create-user-token')
+
 module.exports = class UserController {
   static async register(req, res) {
     const { name, email, password, confirmpassword, phone, block, apartment } =
@@ -70,7 +72,8 @@ module.exports = class UserController {
 
     if (userExists) {
       res.status(422).json({
-        message: 'This user is already registered to our database. Try other email.'
+        message:
+          'This user is already registered to our database. Try other email.'
       })
     }
 
@@ -90,10 +93,8 @@ module.exports = class UserController {
 
     try {
       const newUser = await user.save()
-      res.status(201).json({
-        message: `User ${newUser.name} has been created!`,
-        newUser
-      })
+
+      await createUserToken(newUser, req, res)
     } catch (err) {
       res.status(500).json({
         message: err
