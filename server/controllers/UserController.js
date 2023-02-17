@@ -75,6 +75,7 @@ module.exports = class UserController {
         message:
           'This user is already registered to our database. Try other email.'
       })
+      return
     }
 
     // To encrypt the password
@@ -100,5 +101,45 @@ module.exports = class UserController {
         message: err
       })
     }
+  }
+
+  static async login(req, res) {
+    const { email, password } = req.body
+
+    if (!email) {
+      res.status(422).json({
+        message: 'You must specify an email!'
+      })
+      return
+    }
+
+    if (!password) {
+      res.status(422).json({
+        message: 'Pick a password for your account!'
+      })
+      return
+    }
+
+    const user = await User.findOne({
+      email: email
+    })
+
+    if (!userExists) {
+      res.status(422).json({
+        message: 'The account does not exist. Check your email.'
+      })
+      return
+    }
+
+    const checkPassword = await bcrypt.compare(password, user.password)
+
+    if (!checkPassword) {
+      res.status(422).json({
+        message: 'Invalid password.'
+      })
+      return
+    }
+
+    await createUserToken(user, req, res)
   }
 }
