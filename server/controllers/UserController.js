@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const createUserToken = require('../helpers/create-user-token')
 
 module.exports = class UserController {
-  static async register(req, res) {
+  static async register (req, res) {
     const { name, email, password, confirmpassword, phone, block, apartment } =
       req.body
 
@@ -103,7 +103,7 @@ module.exports = class UserController {
     }
   }
 
-  static async login(req, res) {
+  static async login (req, res) {
     const { email, password } = req.body
 
     if (!email) {
@@ -124,7 +124,7 @@ module.exports = class UserController {
       email: email
     })
 
-    if (!userExists) {
+    if (!user) {
       res.status(422).json({
         message: 'The account does not exist. Check your email.'
       })
