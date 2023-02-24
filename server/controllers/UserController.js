@@ -176,4 +176,87 @@ module.exports = class UserController {
 
     res.status(200).json({ user })
   }
+
+  static async editUser (req, res) {
+
+    const id = req.params.id
+
+    const user = await User.findById(id)
+
+    const { name, email, password, confirmpassword, phone, block, apartment } =
+      req.body
+
+    let image = ''
+
+    
+    if (!name) {
+      res.status(422).json({
+        message: 'You must specify a name!'
+      })
+      return
+    }
+
+    if (!email) {
+      res.status(422).json({
+        message: 'You must specify an email!'
+      })
+      return
+    }
+
+    const userExists = await User.findOne({email: email})
+
+    if (user.email !== email && userExists) {
+      res.status(422).json({
+        message: 'User not found.'
+      })
+      return 
+    }
+
+    user.email = email
+
+
+    if (!password) {
+      res.status(422).json({
+        message: 'Pick a password for your account!'
+      })
+      return
+    }
+
+    if (!confirmpassword) {
+      res.status(422).json({
+        message: 'You must confirm your password!'
+      })
+      return
+    }
+
+    if (password !== confirmpassword) {
+      res.status(422).json({
+        message: 'The passwords are not matching.'
+      })
+      return
+    }
+
+    if (!phone) {
+      res.status(422).json({
+        message: 'You must inform your phone!'
+      })
+      return
+    }
+
+    if (!block) {
+      res.status(422).json({
+        message: 'You must inform the block you live!'
+      })
+      return
+    }
+
+    if (!apartment) {
+      res.status(422).json({
+        message: 'You must inform the apartment you live!'
+      })
+      return
+    }
+
+
+  }
 }
