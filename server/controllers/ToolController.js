@@ -209,4 +209,28 @@ module.exports = class ToolController {
 
     res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
   }
+
+  static async conclude (req, res) {
+    const id = req.params.id
+
+    const tool = await Tool.findOne({ _id: id })
+
+    if (!tool) {
+      res.status(404).json({ message: 'Tool was not found.'})
+      return
+    }
+
+    const token = getToken(req)
+    const user = await getUserByToken(token)
+
+    if (tool.owner._id.toString() !== user._id.toString()) {
+      res.status(422).json({ message: 'You do not own this tool.' })
+    }
+
+    tool.available = false
+
+    await Tool.findByIdAndUpdate(id, tool)
+
+    res.status(200).json({ message: `You have confirmed the claim from ${tool.taker.name}` })
+  }
 }
