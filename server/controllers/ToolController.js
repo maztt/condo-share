@@ -128,4 +128,49 @@ module.exports = class ToolController {
 
     res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
   }
+
+  static async editTool (req, res) {
+    const id = req.params.id
+
+    const { name, available } = req.body
+    const images = req.files
+
+    const updatedData = {}
+
+    const tool = await Tool.findOne({ _id: id })
+
+    if (!tool) {
+      res.status(404).json({ message: 'Tool was not found.'})
+      return
+    }
+
+    const token = getToken(req)
+    const user = await getUserByToken(token)
+
+    if (tool.owner._id.toString() !== user._id.toString()) {
+      res.status(422).json({ message: 'You do not own this tool.' })
+      return
+    }
+
+    if (!name) {
+      res.status(422).json({ message: 'You must specify the tool name.'})
+      return
+    } else {
+      updatedData.name = name
+    }
+
+    if (images.length === 0) {
+      res.status(422).json({ message: 'You must upload at least one image of the tool.'})
+      return
+    } else {
+      updatedData.images = []
+      images.map(image => {
+        updatedData.images.push(image.filename)
+      })
+    }
+
+    await Tool.findByIdAndUpdate(id, updatedData)
+
+    res.status(200).json({ message: 'The tool was updated.' })
+  }
 }
