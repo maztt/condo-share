@@ -12,5 +12,6 @@ router.post(
   ToolController.create
 )
 router.get('/', ToolController.showAll)
+router.get('/mytools', verifyToken, ToolController.showAllUserTools)
 
 module.exports = router
