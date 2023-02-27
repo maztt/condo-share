@@ -2,6 +2,7 @@ const Tool = require('../models/Tool')
 
 const getToken = require('../helpers/get-user-token')
 const getUserByToken = require('../helpers/get-user-by-token')
+const ObjectId = require('mongoose').Types.ObjectId
 
 module.exports = class ToolController {
   static async create(req, res) {
@@ -81,5 +82,22 @@ module.exports = class ToolController {
     res.status(200).json({
       tools
     })
+  }
+
+  static async getToolById (req, res) {
+    const id = req.params.id
+
+    if (!ObjectId.isValid(id)) {
+      res.status(422).json({ message: 'Invalid ID!' })
+      return
+    }
+
+    const tool = await Tool.findOne({_id: id})
+
+    if (!tool) {
+      res.status(404).json({ message: 'Tool not found.' })
+    }
+
+    res.status(200).json({ tool: tool })
   }
 }
