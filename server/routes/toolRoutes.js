@@ -11,5 +11,6 @@ router.post(
   imageUpload.array('images'),
   ToolController.create
 )
+router.get('/', ToolController.showAll)
 
 module.exports = router
