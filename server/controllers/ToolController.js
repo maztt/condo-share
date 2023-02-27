@@ -5,12 +5,19 @@ const getUserByToken = require('../helpers/get-user-by-token')
 
 module.exports = class ToolController {
   static async create(req, res) {
-    const { name, images } = req.body
+    const name = req.body.name
 
     const available = true
 
+    const images = req.files
+
     if (!name) {
       res.status(422).json({ message: 'You must specify the tool name.'})
+      return
+    }
+
+    if (images.length === 0) {
+      res.status(422).json({ message: 'You must upload at least one image of the tool.'})
       return
     }
 
