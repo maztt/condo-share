@@ -15,5 +15,6 @@ router.get('/', ToolController.showAll)
 router.get('/mytools', verifyToken, ToolController.showAllUserTools)
 router.get('/mytakings', verifyToken, ToolController.showAllUserTakenTools)
 router.get('/:id', ToolController.getToolById)
+router.delete('/:id', verifyToken, ToolController.removeToolById)
 
 module.exports = router
