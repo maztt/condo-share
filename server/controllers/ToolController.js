@@ -95,9 +95,37 @@ module.exports = class ToolController {
     const tool = await Tool.findOne({_id: id})
 
     if (!tool) {
-      res.status(404).json({ message: 'Tool not found.' })
+      res.status(404).json({ message: 'Tool was not found.' })
     }
 
     res.status(200).json({ tool: tool })
+  }
+
+  static async removeToolById (req, res) {
+    const id = req.params.id
+
+    if (!ObjectId.isValid(id)) {
+      res.status(422).json({ message: 'Invalid ID!' })
+      return
+    }
+
+    const tool = await Tool.findOne({ _id: id })
+
+    if (!tool) {
+      res.status(404).json({ message: 'Tool was not found.' })
+      return
+    }
+
+    const token = getToken(req)
+    const user = await getUserByToken(token)
+
+    if (tool.owner._id.toString() !== user._id.toString()) {
+      res.status(422).json({ message: 'You do not own this tool.' })
+      return
+    }
+
+    await Tool.findByIdAndDelete(id)
+
+    res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
   }
 }
