@@ -22,5 +22,6 @@ router.patch(
   imageUpload.array('images'),
   ToolController.editTool
 )
+router.patch('/schedule/:id', verifyToken, ToolController.schedule)
 
 module.exports = router
