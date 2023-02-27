@@ -18,7 +18,9 @@ app.use(express.static('public'))
 
 // ROUTES
 const userRoutes = require('./routes/userRoutes')
+const toolRoutes = require('./routes/toolRoutes')
 
 app.use('/users', userRoutes)
+app.use('/tools', toolRoutes)
 
 app.listen(port)
