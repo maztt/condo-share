@@ -28,12 +28,18 @@ module.exports = class ToolController {
       name,
       images: [],
       available,
-      user: {
+      owner: {
         _id: user._id,
         name: user.name,
         image: user.image,
-        phone: user.phone
+        phone: user.phone,
+        block: user.block,
+        apartment: user.apartment
       }
+    })
+
+    images.map(image => {
+      tool.images.push(image.filename)
     })
 
     try {
