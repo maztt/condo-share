@@ -23,5 +23,6 @@ router.patch(
   ToolController.editTool
 )
 router.patch('/schedule/:id', verifyToken, ToolController.schedule)
+router.patch('/conclude/:id', verifyToken, ToolController.conclude)
 
 module.exports = router
