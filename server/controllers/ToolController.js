@@ -173,4 +173,40 @@ module.exports = class ToolController {
 
     res.status(200).json({ message: 'The tool was updated.' })
   }
+
+  static async schedule (req, res) {
+    const id = req.params.id
+
+    const tool = await Tool.findOne({ _id: id })
+
+    if (!tool) {
+      res.status(404).json({ message: 'Tool was not found.'})
+      return
+    }
+
+    const token = getToken(req)
+    const user = await getUserByToken(token)
+
+    if (tool.owner._id.equals(user._id)) {
+      res.status(422).json({ message: 'You can not claim your own tool.' })
+      return
+    }
+
+    if (tool.taker) {
+      if (tool.taker._id.equals(user._id)) {
+        res.status(422).json({ message: 'You have already claimed this tool.' })
+        return
+      }
+    }
+
+    tool.taker = {
+      _id: user._id,
+      name: user.name,
+      image: user.image
+    }
+
+    await Tool.findByIdAndUpdate(id, tool)
+
+    res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
+  }
 }
