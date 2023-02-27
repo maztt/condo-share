@@ -3,7 +3,13 @@ const ToolController = require('../controllers/ToolController')
 
 // Middlewares
 const verifyToken = require('../helpers/verify-user-token')
+const { imageUpload } = require('../helpers/image-upload')
 
-router.post('/create', verifyToken, ToolController.create)
+router.post(
+  '/create',
+  verifyToken,
+  imageUpload.array('images'),
+  ToolController.create
+)
 
 module.exports = router
