@@ -54,4 +54,15 @@ module.exports = class ToolController {
       tools: tools
     })
   }
+
+  static async showAllUserTools (req, res) {
+    const token = getToken(req)
+    const user = await getUserByToken(token)
+
+    const tools = await Tool.find({ 'user._id': user._id }).sort('-createdAt')
+
+    res.status(200).json({
+      tools
+    })
+  }
 }
