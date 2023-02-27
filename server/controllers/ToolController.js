@@ -46,4 +46,12 @@ module.exports = class ToolController {
       res.status(500).json({ message: error })
     }
   }
+
+  static async showAll (req, res) {
+    const tools = await Tool.find().sort('-createdAt')
+
+    res.status(200).json({
+      tools: tools
+    })
+  }
 }
