@@ -19,11 +19,13 @@
 }
 
 .form_container input[type='submit']:hover {
-  background-color: #1C8A42;
+  background-color: #2bb65c;
 }
 
 .form_container p {
   margin-top: 1em;
+  text-align: center;
+  font-size: .8em;
 }
 
 .form_container p a {
