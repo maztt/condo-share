@@ -1,11 +1,15 @@
+import Input from '../../form/Input.js'
+
 import { Link } from 'react-router-dom'
+
+import styles from '../../form/Form.module.css'
 
 function Register () {
 
   function handleChange (e) {}
 
   return (
-    <section>
+    <section className={styles.form_container}>
       <h1>Register</h1>
       <form>
         <Input 
