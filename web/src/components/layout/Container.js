@@ -1,6 +1,8 @@
+import styles from './Container.module.css'
+
 function Container ({ children }) {
   return (
-    <main>
+    <main className={styles.container}>
       {children}
     </main>
   )
