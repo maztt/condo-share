@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import bus from '../../utils/bus.js'
 
+import styles from './Message.module.css'
+
 function Message() {
   let [visibility, setVisibility] = useState(false)
   let [message, setMessage] = useState('')
@@ -22,7 +24,7 @@ function Message() {
 
   return (
     visibility && (
-      <div>{message}</div>
+      <div className={`${styles.message} ${styles[type]}`}>{message}</div>
     )
   )
 }
