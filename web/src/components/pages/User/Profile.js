@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import formStyles from '../../form/Form.module.css'
+import styles from './Profile.module.css'
 import api from '../../../utils/api.js'
 
 import Input from '../../form/Input.js'
@@ -31,7 +32,9 @@ function Profile() {
 
   return (
     <section>
-      <h1>My profile</h1>
+      <div  className={styles.profile_header}>
+        <h1>My profile</h1>
+      </div> 
       <form className={formStyles.form_container}>
         <Input 
           text="Photo"
