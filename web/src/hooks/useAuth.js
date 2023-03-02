@@ -38,6 +38,24 @@ export default function useAuth() {
     setFlashMessage(msgText, msgType)
   }
 
+  async function login(user) {
+    let msgText = 'Logged in!'
+    let msgType = 'success'
+
+    try {
+      const data = await api.post('/users/login', user).then((response) => {
+        return response.data
+      })
+
+      await authUser(data)
+    } catch (error) {
+      msgText = error.response.data.message
+      msgType = 'error'
+    }
+
+    setFlashMessage(msgText, msgType)
+  }
+
   async function authUser(data) {
     setAuthentication(true)
 
@@ -58,5 +76,5 @@ export default function useAuth() {
     setFlashMessage(msgText, msgType)
   }
 
-  return { authentication, register, logout }
+  return { authentication, register, login, logout }
 }
