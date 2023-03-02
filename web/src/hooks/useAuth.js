@@ -46,5 +46,17 @@ export default function useAuth() {
     navigate('/')
   }
 
-  return { authentication, register }
+  function logout() {
+    const msgText = 'Logging off...'
+    const msgType = 'success'
+
+    setAuthentication(false)
+    localStorage.removeItem('token')
+    api.defaults.headers.Authorization = undefined
+    navigate('/')
+
+    setFlashMessage(msgText, msgType)
+  }
+
+  return { authentication, register, logout }
 }
