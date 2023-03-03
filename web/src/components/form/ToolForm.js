@@ -39,7 +39,7 @@ function ToolForm({ handleSubmit, toolData, btnText }) {
 
   return (
     <form onSubmit={submit} className={formStyles.form_container}>
-      <div>
+      <div className={formStyles.preview_tool_images}>
         {preview.length > 0
           ? preview.map((image, index) => (
               <img
