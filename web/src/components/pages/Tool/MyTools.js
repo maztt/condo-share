@@ -20,6 +20,26 @@ function MyTools() {
     })
   }, [token])
 
+  async function removeTool(id) {
+    let msgType = 'success'
+
+    const data = await api.delete(`/tools/${id}`, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(token)}`
+      }
+    }).then((response) => {
+      const updatedTools = tools.filter((tool) => tool._id != id)
+      setTools(updatedTools)
+
+      return response.data
+    }).catch((err) => {
+      msgType = 'error'
+      return err.response.data
+    })
+
+    setFlashMessage(data.message, msgType)
+  }
+
   return (
     <section>
       <div className={styles.toolslist_header}>
@@ -42,7 +62,9 @@ function MyTools() {
                     <button className={styles.conclude_btn}>Confirm Claim</button>
                   )}
                   <Link to={`/tool/edit/${tool._id}`}>Edit</Link>
-                  <button>Delete</button>
+                  <button onClick={() => {
+                    removeTool(tool._id)
+                  }}>Delete</button>
                 </>
               ) : (
                 <p>This tool has already been claimed.</p>
