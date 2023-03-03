@@ -1,4 +1,5 @@
 import api from '../../../utils/api.js'
+import styles from './AddTool.module.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useFlashMessage from '../../../hooks/useFlashMessage.js'
@@ -46,7 +47,7 @@ function AddTool() {
 
   return (
     <section>
-      <div>
+      <div className={styles.addtool_header}>
         <h1>Assign a new Tool</h1>
         <p>All condos will be able to claim a sharing</p>
       </div>
