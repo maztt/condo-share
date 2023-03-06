@@ -21,6 +21,12 @@ function Home() {
         {tools.length > 0 &&
           tools.map(tool => (
             <div className={styles.tool_card} key={tool._id}>
+              <div
+                style={{
+                  backgroundImage: `url(${process.env.REACT_APP_API}/images/tools/${tool.images[0]})`,
+                }}
+                className={styles.tool_card_image}
+              ></div>
               <h3>{tool.name}</h3>
               {tool.available ? (
                 <Link to={`/tool/${tool._id}`}>Available</Link>
