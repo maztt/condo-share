@@ -159,10 +159,7 @@ module.exports = class ToolController {
       updatedData.name = name
     }
 
-    if (images.length === 0) {
-      res.status(422).json({ message: 'You must upload at least one image of the tool.'})
-      return
-    } else {
+    if (images.length > 0) {
       updatedData.images = []
       images.map(image => {
         updatedData.images.push(image.filename)
