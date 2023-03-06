@@ -22,6 +22,9 @@ function Navbar () {
               <Link to='/'>Claim</Link>
             </li>
             <li>
+              <Link to='/tool/mytools'>My tools</Link>
+            </li>
+            <li>
               <Link to="/user/profile">Profile</Link>
             </li>
             <li onClick={logout}>
