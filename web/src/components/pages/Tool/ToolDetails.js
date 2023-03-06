@@ -2,6 +2,7 @@ import api from '../../../utils/api.js'
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import useFlashMessage from '../../../hooks/useFlashMessage.js'
+import styles from './ToolDetails.module.css'
 
 function ToolDetails() {
 const [tool, setTool] = useState({})
@@ -18,14 +19,14 @@ useEffect(() => {
   return (
     <>
       {tool.name && (
-        <section>
-          <div>
+        <section className={styles.tool_details_container}>
+          <div className={styles.tooldetails_header}>
             <h1>
               {tool.name}
             </h1>
             <p>Does this tool answer to your needs?</p>
           </div>
-          <div>
+          <div className={styles.tool_images}>
             {tool.images.map((image, index) => (
               <img 
                 src={`${process.env.REACT_APP_API}/images/tools/${image}`} 
@@ -35,10 +36,10 @@ useEffect(() => {
             ))}
           </div>
           <p>
-            <span>Category:</span> {tool.category}
+            <span className="bold">Category:</span> {tool.category}
           </p>
           {token ? (
-            <button>Claim.</button>
+            <button>Claim</button>
           ) : (
             <p>Get yourself an <Link to='/register'>account</Link> to claim items.</p>
           )}
