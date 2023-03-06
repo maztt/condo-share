@@ -48,6 +48,10 @@
   min-width: 100px;
 }
 
+.actions {
+  margin-left: auto;
+}
+
 .actions a, .actions button {
   text-decoration: none;
   background-color: #fff;
