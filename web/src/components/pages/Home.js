@@ -1,6 +1,7 @@
 import api from '../../utils/api.js'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import styles from './Home.module.css'
 
 function Home() {
   const [tools, setTools] = useState([])
@@ -13,18 +14,18 @@ function Home() {
 
   return (
     <section>
-      <div>
+      <div className={styles.tool_home_header}>
         <h1>Claim a Tool</h1>
       </div>
-      <div>
+      <div className={styles.tool_container}>
         {tools.length > 0 &&
           tools.map(tool => (
-            <div>
+            <div className={styles.tool_card} key={tool._id}>
               <h3>{tool.name}</h3>
               {tool.available ? (
-                <p>Available</p>
+                <Link to={`/tool/${tool._id}`}>Available</Link>
               ) : (
-                <p>Not available</p>
+                <p className="bold">Not available</p>
               )}
             </div>
           ))}
