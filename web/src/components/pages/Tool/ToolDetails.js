@@ -16,6 +16,21 @@ useEffect(() => {
   })
 }, [id])
 
+async function schedule() {
+  let msgType = 'success'
+
+  const data = await api.patch(`/tools/schedule/${tool._id}`, {
+    Authorization: `Bearer ${JSON.parse(token)}`
+  }).then((response) => {
+    return response.data
+  }).catch((err) => {
+    msgType = 'error'
+    return err.response.data
+  })
+
+  setFlashMessage(data.message, msgType)
+}
+
   return (
     <>
       {tool.name && (
@@ -39,7 +54,7 @@ useEffect(() => {
             <span className="bold">Category:</span> {tool.category}
           </p>
           {token ? (
-            <button>Claim</button>
+            <button onClick={schedule}>Claim</button>
           ) : (
             <p>Get yourself an <Link to='/register'>account</Link> to claim items.</p>
           )}
