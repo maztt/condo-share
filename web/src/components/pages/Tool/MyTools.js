@@ -32,7 +32,7 @@ function MyTools() {
         }
       })
       .then(response => {
-        const updatedTools = tools.filter(tool => tool._id != id)
+        const updatedTools = tools.filter(tool => tool._id !== id)
         setTools(updatedTools)
 
         return response.data
@@ -51,10 +51,10 @@ function MyTools() {
         <h1>My Tools</h1>
         <Link to="/tool/add">Publish a new Tool</Link>
       </div>
-      <div className={styles.petslist_container}>
+      <div className={styles.toolslist_container}>
         {tools.length > 0 &&
           tools.map(tool => (
-            <div key={tool._id} className={styles.petlist_row}>
+            <div key={tool._id} className={styles.toolslist_row}>
               <RoundedImage
                 src={`${process.env.REACT_APP_API}/images/tools/${tool.images[0]}`}
                 alt={tool.name}
