@@ -1,0 +1,45 @@
+.tool_details_container {
+  text-align: center;
+}
+
+.tool_details_container p {
+  margin-bottom: 1em;
+}
+
+.tool_details_header {
+  margin-bottom: 2em;
+}
+
+.tool_images {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tool_images img {
+  max-height: 200px;
+  margin: 1em;
+}
+
+.tool_details_container button {
+  text-decoration: none;
+  background-color: #25B456;
+  color: #FFF;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .5s;
+  padding: 7px 15px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.1em;
+  margin-left: 1em;
+  max-width: 200px;
+  min-height: 2.5em;
+}
+
+.tool_details_container button:hover {
+  background-color: #1c8af2;
+}
