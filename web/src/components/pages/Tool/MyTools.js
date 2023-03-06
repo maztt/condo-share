@@ -45,6 +45,23 @@ function MyTools() {
     setFlashMessage(data.message, msgType)
   }
 
+  async function confirmClaiming(id) {
+    let msgType = 'success'
+
+    const data = await api.patch(`/tools/conclude/${id}`, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(token)}`
+      }
+    }).then((response) => {
+      return response.data
+    }).catch((err) => {
+      msgType = 'error'
+      return err.response.data
+    })
+
+    setFlashMessage(data.message, msgType)
+  }
+
   return (
     <section>
       <div className={styles.toolslist_header}>
@@ -65,7 +82,9 @@ function MyTools() {
                 {tool.available ? (
                   <>
                     {tool.taker && (
-                      <button className={styles.conclude_btn}>
+                      <button className={styles.conclude_btn} onClick={() => {
+                        confirmClaiming(tool._id)
+                      }}>
                         Confirm Claim
                       </button>
                     )}
