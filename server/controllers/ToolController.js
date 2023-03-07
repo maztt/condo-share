@@ -7,6 +7,7 @@ const ObjectId = require('mongoose').Types.ObjectId
 module.exports = class ToolController {
   static async create(req, res) {
     const name = req.body.name
+    const category = req.body.category
 
     const available = true
 
@@ -14,6 +15,11 @@ module.exports = class ToolController {
 
     if (!name) {
       res.status(422).json({ message: 'You must specify the tool name.'})
+      return
+    }
+
+    if (!category) {
+      res.status(422).json({ message: 'You must select the category group.'})
       return
     }
 
@@ -27,6 +33,7 @@ module.exports = class ToolController {
 
     const tool = new Tool({
       name,
+      category,
       images: [],
       available,
       owner: {
@@ -132,7 +139,7 @@ module.exports = class ToolController {
   static async editTool (req, res) {
     const id = req.params.id
 
-    const { name, available } = req.body
+    const { name, category, available } = req.body
     const images = req.files
 
     const updatedData = {}
@@ -157,6 +164,13 @@ module.exports = class ToolController {
       return
     } else {
       updatedData.name = name
+    }
+
+    if (!category) {
+      res.status(422).json({ message: 'You must select the category group.'})
+      return
+    } else {
+      updatedData.category = category
     }
 
     if (images.length > 0) {
