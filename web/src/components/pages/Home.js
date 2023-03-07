@@ -28,6 +28,10 @@ function Home() {
                 className={styles.tool_card_image}
               ></div>
               <h3>{tool.name}</h3>
+              <div className={styles.tool_card_info}>
+              <p><span className="bold">Category:</span> {tool.category}</p>
+              <p><span className="bold">Owner:</span> {tool.owner.name} | Block: {tool.owner.block}, Ap: {tool.owner.apartment}</p>
+              </div>
               {tool.available ? (
                 <Link to={`/tool/${tool._id}`}>Available</Link>
               ) : (
