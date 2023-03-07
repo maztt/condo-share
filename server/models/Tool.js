@@ -9,6 +9,10 @@ const Tool = mongoose.model(
         type: String,
         required: true
       },
+      category: {
+        type: String,
+        required: true
+      },
       images: {
         type: Array,
         required: true
