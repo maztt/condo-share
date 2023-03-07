@@ -28,14 +28,23 @@
   margin-bottom: 1.2em;
 }
 
+.tool_card_info {
+  font-size: .8em;
+  margin-bottom: 1.2em;
+}
+
 .tool_card h3 {
   color: #16479d;
-  margin-bottom: 1em;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 1.6em;
   padding: 8px;
 }
 
 .tool_card a {
+  margin-top: 1em;
   text-decoration: none;
   background-color: #417de5;
   color: #16479d;
