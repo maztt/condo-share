@@ -8,11 +8,16 @@ function ToolForm({ handleSubmit, toolData, btnText }) {
   const [tool, setTool] = useState(toolData || {})
   const [preview, setPreview] = useState([])
   const categories = [
+    'Adhesives, Sealants & Fillers',
+    'Cleaning & Drainage',
     'Electrical',
     'Engineering Tools',
     'Garden Tools',
+    'Hand Tools',
     'Ladders & Sack Trucks',
-    'Materials',
+    'Measuring Tools',
+    'Plumbing Tools',
+    'Power Tools',
     'Welding Tools'
   ]
 
