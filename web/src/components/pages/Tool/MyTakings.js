@@ -9,7 +9,7 @@ function MyTakings() {
   const [token] = useState(localStorage.getItem('token') || '')
 
   useEffect(() => {
-    api.get('/tool/mytakings', { 
+    api.get('tools/mytakings', { 
       headers: {
         Authorization: `Bearer ${JSON.parse(token)}`
       }
@@ -35,10 +35,10 @@ function MyTakings() {
             <span className="bold">{tool.name}</span>
             <div className={styles.contacts}>
               <p>
-                <span className="bold">Call to:</span> {tool.user.phone}
+                <span className="bold">Call to:</span> {tool.owner.phone}
               </p>
               <p>
-                <span className="bold">Speak to:</span> {tool.user.name}
+                <span className="bold">Speak to:</span> {tool.owner.name}
               </p>
             </div>
             <div className={styles.actions}>
