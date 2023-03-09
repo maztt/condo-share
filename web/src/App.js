@@ -25,14 +25,14 @@ function App() {
           <Message />
           <Container>
             <Routes>
-              <Route path='/register' element={<Register />}/>
               <Route path='/login' element={<Login />}/>
+              <Route path='/register' element={<Register />}/>
               <Route path='/user/profile' element={<Profile />}/>
-              <Route path='/tool/mytools' element={<MyTools />}/>
               <Route path='/tool/add' element={<AddTool />}/>
               <Route path='/tool/edit/:id' element={<EditTool />}/>
-              <Route path='/tool/:id' element={<ToolDetails />}/>
+              <Route path='/tool/mytools' element={<MyTools />}/>
               <Route path='/tool/mytakings' element={<MyTakings />}/>
+              <Route path='/tool/:id' element={<ToolDetails />}/>
               <Route path='/' element={<Home />}/>
             </Routes>
           </Container>
