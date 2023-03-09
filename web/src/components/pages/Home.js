@@ -35,7 +35,7 @@ function Home() {
               {tool.available ? (
                 <Link to={`/tool/${tool._id}`}>Available</Link>
               ) : (
-                <p className="bold">Not available</p>
+                <p className={styles.claimed_text}>Not available</p>
               )}
             </div>
           ))}
