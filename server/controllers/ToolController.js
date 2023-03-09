@@ -73,7 +73,7 @@ module.exports = class ToolController {
     const token = getToken(req)
     const user = await getUserByToken(token)
 
-    const tools = await Tool.find({ 'user._id': user._id }).sort('-createdAt')
+    const tools = await Tool.find({ 'owner._id': user._id }).sort('-createdAt')
 
     res.status(200).json({
       tools
