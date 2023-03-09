@@ -1,7 +1,7 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 1em 1.5em;
+  padding: .8em 1.5em;
   color: #16479d;
   background-color: #dbd9d9;
 }
@@ -12,7 +12,7 @@
 }
 
 .navbar_logo img {
-  width: 50px;
+  width: 250px;
 }
 
 .navbar ul {
