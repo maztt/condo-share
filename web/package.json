@@ -1,8 +1,17 @@
 {
-  "name": "web",
-  "version": "0.1.0",
+  "name": "condo-share-frontend",
+  "version": "1.0.0",
+  "description": "The frontend for the condo-share application",
   "private": true,
   "type": "module",
+  "author": "Júlio Mazotti (https://www.github.com/maztt)",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -15,12 +24,6 @@
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

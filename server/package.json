@@ -1,15 +1,16 @@
 {
-  "name": "server",
+  "name": "condo-share-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "The backend for the condo-share application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js localhost 5000"
+    "dev": "nodemon ./index.js localhost 5000",
+    "start": "node ./index.js localhost 5000"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Júlio Mazotti (https://www.github.com/maztt)",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
