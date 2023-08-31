@@ -1,5 +1,7 @@
-const express = require('express')
-const cors = require('cors')
+import express from 'express'
+import cors from 'cors'
+import userRoutes from './src/routes/userRoutes.js'
+import toolRoutes from './src/routes/toolRoutes.js'
 
 const app = express()
 const port = 5000
@@ -15,10 +17,6 @@ app.use(cors({
 
 // PUBLIC handler
 app.use(express.static('public'))
-
-// ROUTES
-const userRoutes = require('./routes/userRoutes')
-const toolRoutes = require('./routes/toolRoutes')
 
 app.use('/users', userRoutes)
 app.use('/tools', toolRoutes)

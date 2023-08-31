@@ -1,7 +1,7 @@
-const mongoose = require('../db/conn')
-const { Schema } = mongoose
+import db from '../db/conn.js'
+import { Schema } from 'mongoose'
 
-const Tool = mongoose.model(
+const Tool = db.model(
   'Tool',
   new Schema(
     {
@@ -27,4 +27,4 @@ const Tool = mongoose.model(
   )
 )
 
-module.exports = Tool
+export default Tool

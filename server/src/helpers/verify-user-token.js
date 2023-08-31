@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
-const getToken = require('./get-user-token')
+import jwt from 'jsonwebtoken'
+import { getToken } from './get-user-token.js'
 
 const verifyToken = (req, res, next) => {
 
@@ -22,4 +22,4 @@ const verifyToken = (req, res, next) => {
   }
 }
 
-module.exports = verifyToken
+export { verifyToken }

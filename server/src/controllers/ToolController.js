@@ -1,10 +1,11 @@
-const Tool = require('../models/Tool')
+import mongoose from 'mongoose'
+import Tool from '../models/Tool.js'
+import { getToken } from '../helpers/get-user-token.js'
+import { getUserByToken } from '../helpers/get-user-by-token.js'
 
-const getToken = require('../helpers/get-user-token')
-const getUserByToken = require('../helpers/get-user-by-token')
-const ObjectId = require('mongoose').Types.ObjectId
+const ObjectId = mongoose.Types.ObjectId
 
-module.exports = class ToolController {
+class ToolController {
   static async create(req, res) {
     const name = req.body.name
     const category = req.body.category
@@ -245,3 +246,5 @@ module.exports = class ToolController {
     res.status(200).json({ message: `You have confirmed the claim from ${tool.taker.name}` })
   }
 }
+
+export default ToolController

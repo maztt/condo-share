@@ -1,9 +1,9 @@
-const router = require('express').Router()
-const ToolController = require('../controllers/ToolController')
+import express from 'express'
+import ToolController from '../controllers/ToolController.js'
+import { verifyToken } from '../helpers/verify-user-token.js'
+import { imageUpload } from '../helpers/image-upload.js'
 
-// Middlewares
-const verifyToken = require('../helpers/verify-user-token')
-const { imageUpload } = require('../helpers/image-upload')
+const router = express.Router()
 
 router.post(
   '/create',
@@ -25,4 +25,4 @@ router.patch(
 router.patch('/schedule/:id', verifyToken, ToolController.schedule)
 router.patch('/conclude/:id', verifyToken, ToolController.conclude)
 
-module.exports = router
+export default router

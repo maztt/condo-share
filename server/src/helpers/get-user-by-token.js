@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/User')
+import jwt from 'jsonwebtoken'
+import User from '../models/User.js'
 
 const getUserByToken = async (token) => {
   if (!token) {
@@ -14,4 +14,4 @@ const getUserByToken = async (token) => {
   return user
 }
 
-module.exports = getUserByToken
+export { getUserByToken }

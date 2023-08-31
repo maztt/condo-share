@@ -1,9 +1,9 @@
-const router = require('express').Router()
-const UserController = require('../controllers/UserController')
+import express from 'express'
+import UserController from '../controllers/UserController.js'
+import { verifyToken } from '../helpers/verify-user-token.js'
+import { imageUpload } from '../helpers/image-upload.js'
 
-// Middlewares
-const verifyToken = require('../helpers/verify-user-token')
-const { imageUpload } = require('../helpers/image-upload')
+const router = express.Router()
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
@@ -16,4 +16,4 @@ router.patch(
   UserController.editUser
 )
 
-module.exports = router
+export default router

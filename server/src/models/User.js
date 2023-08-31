@@ -1,7 +1,7 @@
-const mongoose = require('../db/conn')
-const { Schema } = mongoose
+import db from '../db/conn.js'
+import { Schema } from 'mongoose'
 
-const User = mongoose.model(
+const User = db.model(
   'User',
   new Schema(
     {
@@ -37,4 +37,4 @@ const User = mongoose.model(
   )
 )
 
-module.exports = User
+export default User

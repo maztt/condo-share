@@ -1,13 +1,11 @@
-const User = require('../models/User')
+import User from '../models/User.js'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { createUserToken } from '../helpers/create-user-token.js'
+import { getToken } from '../helpers/get-user-token.js'
+import { getUserByToken } from '../helpers/get-user-by-token.js'
 
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-
-const createUserToken = require('../helpers/create-user-token')
-const getToken = require('../helpers/get-user-token')
-const getUserByToken = require('../helpers/get-user-by-token')
-
-module.exports = class UserController {
+class UserController {
   static async register (req, res) {
     const { name, email, password, confirmpassword, phone, block, apartment } =
       req.body
@@ -273,3 +271,5 @@ module.exports = class UserController {
     }
   }
 }
+
+export default UserController
