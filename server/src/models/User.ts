@@ -1,4 +1,4 @@
-import db from '../db/conn.js'
+import db from '../db/conn'
 import { Schema } from 'mongoose'
 
 const User = db.model(

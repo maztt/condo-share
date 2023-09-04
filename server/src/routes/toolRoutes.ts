@@ -1,9 +1,9 @@
-import express from 'express'
-import ToolController from '../controllers/ToolController.js'
-import { verifyToken } from '../helpers/verify-user-token.js'
-import { imageUpload } from '../helpers/image-upload.js'
+import express, { Router } from 'express'
+import ToolController from '../controllers/ToolController'
+import { verifyToken } from '../helpers/verify-user-token'
+import { imageUpload } from '../helpers/image-upload'
 
-const router = express.Router()
+const router: Router = express.Router()
 
 router.post(
   '/create',

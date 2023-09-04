@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken'
-import { getToken } from './get-user-token.js'
+import { getToken } from './get-user-token'
+import { NextFunction, Request, Response } from 'express'
 
-const verifyToken = (req, res, next) => {
+interface CustomRequest extends Request {
+  user?: any
+}
+
+const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
 
   if (!req.headers.authorization) {
     return res.status(401).json({ message: 'Access denied.' })

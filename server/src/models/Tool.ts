@@ -1,4 +1,4 @@
-import db from '../db/conn.js'
+import db from '../db/conn'
 import { Schema } from 'mongoose'
 
 const Tool = db.model(
@@ -23,7 +23,7 @@ const Tool = db.model(
       owner: Object,
       taker: Object
     },
-    { timestamp: true }
+    { timestamps: true }
   )
 )
 

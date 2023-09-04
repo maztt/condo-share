@@ -1,12 +1,13 @@
 import mongoose from 'mongoose'
-import Tool from '../models/Tool.js'
-import { getToken } from '../helpers/get-user-token.js'
-import { getUserByToken } from '../helpers/get-user-by-token.js'
+import Tool from '../models/Tool'
+import { Request, Response } from 'express'
+import { getUserByToken } from '../helpers/get-user-by-token'
+import { getToken } from '../helpers/get-user-token'
 
 const ObjectId = mongoose.Types.ObjectId
 
 class ToolController {
-  static async create(req, res) {
+  static async create (req: Request, res: Response) {
     const name = req.body.name
     const category = req.body.category
 
@@ -24,13 +25,16 @@ class ToolController {
       return
     }
 
-    if (images.length === 0) {
-      res.status(422).json({ message: 'You must upload at least one image of the tool.'})
-      return
+    if (images) {
+      if (images.length === 0) {
+        res.status(422).json({ message: 'You must upload at least one image of the tool.'})
+        return
+      }
     }
 
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
+    if (!user) return
 
     const tool = new Tool({
       name,
@@ -47,9 +51,12 @@ class ToolController {
       }
     })
 
-    images.map(image => {
-      tool.images.push(image.filename)
-    })
+    if (Array.isArray(images)) {
+      images.map((image: { filename: any }) => {
+        tool.images.push(image.filename)
+      })
+    }
+
 
     try {
       const newTool = await tool.save()
@@ -62,7 +69,7 @@ class ToolController {
     }
   }
 
-  static async showAll (req, res) {
+  static async showAll (req: Request, res: Response) {
     const tools = await Tool.find().sort('-createdAt')
 
     res.status(200).json({
@@ -70,9 +77,9 @@ class ToolController {
     })
   }
 
-  static async showAllUserTools (req, res) {
+  static async showAllUserTools (req: Request, res: Response) {
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
 
     const tools = await Tool.find({ 'owner._id': user._id }).sort('-createdAt')
 
@@ -81,9 +88,9 @@ class ToolController {
     })
   }
 
-  static async showAllUserTakenTools (req, res) {
+  static async showAllUserTakenTools (req: Request, res: Response) {
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
 
     const tools = await Tool.find({ 'taker._id': user._id }).sort('-createdAt')
 
@@ -92,7 +99,7 @@ class ToolController {
     })
   }
 
-  static async getToolById (req, res) {
+  static async getToolById (req: Request, res: Response) {
     const id = req.params.id
 
     if (!ObjectId.isValid(id)) {
@@ -109,7 +116,7 @@ class ToolController {
     res.status(200).json({ tool: tool })
   }
 
-  static async removeToolById (req, res) {
+  static async removeToolById (req: Request, res: Response) {
     const id = req.params.id
 
     if (!ObjectId.isValid(id)) {
@@ -125,7 +132,7 @@ class ToolController {
     }
 
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
 
     if (tool.owner._id.toString() !== user._id.toString()) {
       res.status(422).json({ message: 'You do not own this tool.' })
@@ -137,13 +144,13 @@ class ToolController {
     res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
   }
 
-  static async editTool (req, res) {
+  static async editTool (req: Request, res: Response) {
     const id = req.params.id
 
     const { name, category, available } = req.body
     const images = req.files
 
-    const updatedData = {}
+    const updatedData: any = {}
 
     const tool = await Tool.findOne({ _id: id })
 
@@ -153,7 +160,7 @@ class ToolController {
     }
 
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
 
     if (tool.owner._id.toString() !== user._id.toString()) {
       res.status(422).json({ message: 'You do not own this tool.' })
@@ -174,11 +181,13 @@ class ToolController {
       updatedData.category = category
     }
 
-    if (images.length > 0) {
-      updatedData.images = []
-      images.map(image => {
-        updatedData.images.push(image.filename)
-      })
+    if (images !== undefined) {
+      if (Array.isArray(images)) {
+        updatedData.images = []
+        images.map(image => {
+          updatedData.images.push(image.filename)
+        })
+      }
     }
 
     await Tool.findByIdAndUpdate(id, updatedData)
@@ -186,7 +195,7 @@ class ToolController {
     res.status(200).json({ message: 'The tool was updated.' })
   }
 
-  static async schedule (req, res) {
+  static async schedule (req: Request, res: Response) {
     const id = req.params.id
 
     const tool = await Tool.findOne({ _id: id })
@@ -197,7 +206,7 @@ class ToolController {
     }
 
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
 
     if (tool.owner._id.equals(user._id)) {
       res.status(422).json({ message: 'You can not claim your own tool.' })
@@ -222,7 +231,7 @@ class ToolController {
     res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
   }
 
-  static async conclude (req, res) {
+  static async conclude (req: Request, res: Response) {
     const id = req.params.id
 
     const tool = await Tool.findOne({ _id: id })
@@ -233,7 +242,7 @@ class ToolController {
     }
 
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
 
     if (tool.owner._id.toString() !== user._id.toString()) {
       res.status(422).json({ message: 'You do not own this tool.' })

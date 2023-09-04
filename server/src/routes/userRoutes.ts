@@ -1,9 +1,9 @@
-import express from 'express'
-import UserController from '../controllers/UserController.js'
-import { verifyToken } from '../helpers/verify-user-token.js'
-import { imageUpload } from '../helpers/image-upload.js'
+import express, { Router } from 'express'
+import UserController from '../controllers/UserController'
+import { verifyToken } from '../helpers/verify-user-token'
+import { imageUpload } from '../helpers/image-upload'
 
-const router = express.Router()
+const router: Router = express.Router()
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)

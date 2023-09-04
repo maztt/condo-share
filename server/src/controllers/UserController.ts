@@ -1,12 +1,13 @@
-import User from '../models/User.js'
+import User from '../models/User'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { createUserToken } from '../helpers/create-user-token.js'
-import { getToken } from '../helpers/get-user-token.js'
-import { getUserByToken } from '../helpers/get-user-by-token.js'
+import { createUserToken } from '../helpers/create-user-token'
+import { getToken } from '../helpers/get-user-token'
+import { getUserByToken } from '../helpers/get-user-by-token'
+import { Request, Response } from 'express'
 
 class UserController {
-  static async register (req, res) {
+  static async register (req: Request, res: Response) {
     const { name, email, password, confirmpassword, phone, block, apartment } =
       req.body
 
@@ -104,7 +105,7 @@ class UserController {
     }
   }
 
-  static async login (req, res) {
+  static async login (req: Request, res: Response) {
     const { email, password } = req.body
 
     if (!email) {
@@ -144,16 +145,21 @@ class UserController {
     await createUserToken(user, req, res)
   }
 
-  static async check (req, res) {
+  static async check (req: Request, res: Response) {
+    interface JwtPayload {
+      _id: string
+    }
+
     let currentUser;
 
     if (req.headers.authorization) {
       const token = getToken(req)
-      const decoded = jwt.verify(token, 'dasecret')
+      const { _id } = jwt.verify(token, 'dasecret') as JwtPayload
 
-      currentUser = await User.findById(decoded.id)
-
-      currentUser.password = undefined
+      currentUser = await User.findById(_id)
+      if (currentUser) {
+        currentUser.password = ''
+      }
     } else {
       currentUser = null
     }
@@ -161,7 +167,7 @@ class UserController {
     res.status(200).send(currentUser)
   }
 
-  static async getUserById (req, res) {
+  static async getUserById (req: Request, res: Response) {
     const id = req.params.id
     const user = await User.findById(id).select('-password')
 
@@ -176,12 +182,12 @@ class UserController {
     res.status(200).json({ user })
   }
 
-  static async editUser (req, res) {
-
-    const id = req.params.id
+  static async editUser (req: Request, res: Response) {
 
     const token = getToken(req)
-    const user = await getUserByToken(token)
+    const user = await getUserByToken(token, res)
+
+    if (!user) return
 
     const { name, email, password, confirmpassword, phone, block, apartment } =
       req.body
