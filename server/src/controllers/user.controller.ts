@@ -99,15 +99,9 @@ class UserController {
   static async getUserById (req: Request, res: Response) {
     const id = req.params.id
     const user = await User.findById(id).select('-password')
-
     if (!user) {
-      res.status(422).json({
-        message: 'User not found.'
-      })
-
-      return
+      return res.status(422).json({ message: 'User not found.' })
     }
-
     res.status(200).json({ user })
   }
 
