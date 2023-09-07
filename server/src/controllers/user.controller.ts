@@ -106,84 +106,31 @@ class UserController {
   }
 
   static async editUser (req: Request, res: Response) {
-
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-
     if (!user) return
 
-    const { name, email, password, confirmpassword, phone, block, apartment } =
-      req.body
+    const { name, email, password, confirmpassword, phone, block, apartment } = req.body
 
-    if (req.file) {
-      user.image = req.file.filename
-    }
-    
-    if (!name) {
-      res.status(422).json({
-        message: 'You must specify a name!'
-      })
-      return
-    }
-
+    if (req.file) user.image = req.file.filename
     user.name = name
-
-    if (!email) {
-      res.status(422).json({
-        message: 'You must specify an email!'
-      })
-      return
-    }
-
-    const userExists = await User.findOne({ email: email })
-
-    if (user.email !== email && userExists) {
-      res.status(422).json({
-        message: 'Please, try other email.'
-      })
-      return 
-    }
-
-    user.email = email
-
-    
-    if (!phone) {
-      res.status(422).json({
-        message: 'You must inform your phone!'
-      })
-      return
-    }
-    
     user.phone = phone
-    
-    if (!block) {
-      res.status(422).json({
-        message: 'You must inform the block you live!'
-      })
-      return
-    }
-    
-    user.block = block
-    
-    if (!apartment) {
-      res.status(422).json({
-        message: 'You must inform the apartment you live!'
-      })
-      return
-    }
-    
+    user.block = block   
     user.apartment = apartment
+
+    const emailAlreadyExists = await User.findOne({ email })
+    if (user.email !== email && emailAlreadyExists) {
+      return res.status(422).json({ message: 'This e-mail is already registered to another account.' })
+    }
+    user.email = email
     
-    if (password !== confirmpassword) {
-      res.status(422).json({
-        message: 'The passwords are not matching.'
-      })
-      return
-    } else if (password === confirmpassword && password != null) {
-      const salt = await bcrypt.genSalt(12)
-      const hashedPassword = await bcrypt.hashSync(password, salt)
-  
-      user.password = hashedPassword
+    if (password) {
+      if (password === confirmpassword) {
+        const salt = await bcrypt.genSalt(12)
+        const hashedPassword = bcrypt.hashSync(password, salt)
+        user.password = hashedPassword
+      }
+      return res.status(422).json({ message: 'The passwords are not matching.' })
     }
 
     try {
@@ -192,11 +139,9 @@ class UserController {
         { $set: user },
         { new: true }
       )
-
-      res.status(200).json({ message: 'User has been updated!'})
+      return res.status(200).json({ message: 'User has been updated!'})
     } catch (error) {
-      res.status(500).json({ message: error })
-      return
+      return res.status(500).json({ message: error })
     }
   }
 }
