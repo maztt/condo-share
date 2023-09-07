@@ -53,42 +53,28 @@ class UserController {
   }
 
   static async login (req: Request, res: Response) {
+    const fields = ["email", "password"]
+    const missingFields = []
+    for (const field of fields) {
+      if (!(field in req.body)) {
+        missingFields.push(` ${field}`)
+      }
+    }
+    if (missingFields.length > 0) {
+      return res.status(400).json({ message: `To log in, you must inform:${missingFields}.` })
+    }
+
     const { email, password } = req.body
-
-    if (!email) {
-      res.status(422).json({
-        message: 'You must specify an email!'
-      })
-      return
-    }
-
-    if (!password) {
-      res.status(422).json({
-        message: 'Pick a password for your account!'
-      })
-      return
-    }
-
-    const user = await User.findOne({
-      email: email
-    })
-
+    const user = await User.findOne({ email })
     if (!user) {
-      res.status(422).json({
-        message: 'The account does not exist. Check your email.'
-      })
-      return
+      return res.status(422).json({ message: 'E-mail address is not registered in our database.' })
     }
 
     const checkPassword = await bcrypt.compare(password, user.password)
-
     if (!checkPassword) {
-      res.status(422).json({
-        message: 'Invalid password.'
-      })
-      return
+      return res.status(422).json({ message: 'Invalid password.' })
     }
-
+    
     await createUserToken(user, req, res)
   }
 
