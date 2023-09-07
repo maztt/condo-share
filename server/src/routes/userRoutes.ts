@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import UserController from '../controllers/UserController'
+import UserController from '../controllers/user.controller'
 import { verifyToken } from '../helpers/verify-user-token'
 import { imageUpload } from '../helpers/image-upload'
 

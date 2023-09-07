@@ -8,83 +8,31 @@ import { Request, Response } from 'express'
 
 class UserController {
   static async register (req: Request, res: Response) {
-    const { name, email, password, confirmpassword, phone, block, apartment } =
-      req.body
-
-    if (!name) {
-      res.status(422).json({
-        message: 'You must specify a name!'
-      })
-      return
+    const fields = ['name', 'email', 'password', 'confirmpassword', 'phone', 'block', 'apartment']
+    const missingFields = []
+    for (const field of fields) {
+      if (!(field in req.body)) {
+        missingFields.push(` ${field}`)
+      }
+    }
+    if (missingFields.length > 0) {
+      return res.status(400).json({ message: `Failed to capture:${missingFields}.` })
     }
 
-    if (!email) {
-      res.status(422).json({
-        message: 'You must specify an email!'
-      })
-      return
-    }
-
-    if (!password) {
-      res.status(422).json({
-        message: 'Pick a password for your account!'
-      })
-      return
-    }
-
-    if (!confirmpassword) {
-      res.status(422).json({
-        message: 'You must confirm your password!'
-      })
-      return
-    }
+    const { name, email, password, confirmpassword, phone, block, apartment } = req.body
 
     if (password !== confirmpassword) {
-      res.status(422).json({
-        message: 'The passwords are not matching.'
-      })
-      return
+      return res.status(400).json({ message: 'The passwords are not matching.' })
     }
 
-    if (!phone) {
-      res.status(422).json({
-        message: 'You must inform your phone!'
-      })
-      return
-    }
-
-    if (!block) {
-      res.status(422).json({
-        message: 'You must inform the block you live!'
-      })
-      return
-    }
-
-    if (!apartment) {
-      res.status(422).json({
-        message: 'You must inform the apartment you live!'
-      })
-      return
-    }
-
-    // To check if user is available
-    const userExists = await User.findOne({
-      email: email
-    })
-
+    const userExists = await User.findOne({email})
     if (userExists) {
-      res.status(422).json({
-        message:
-          'This user is already registered to our database. Try other email.'
-      })
-      return
+      return res.status(422).json({ message: 'E-mail address is already in use.' })
     }
 
-    // To encrypt the password
     const salt = await bcrypt.genSalt(12)
-    const hashedPassword = await bcrypt.hashSync(password, salt)
+    const hashedPassword = bcrypt.hashSync(password, salt)
 
-    // To create a new user
     const user = new User({
       name,
       email,
@@ -96,7 +44,6 @@ class UserController {
 
     try {
       const newUser = await user.save()
-
       await createUserToken(newUser, req, res)
     } catch (err) {
       res.status(500).json({
