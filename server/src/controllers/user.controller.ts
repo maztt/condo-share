@@ -78,13 +78,11 @@ class UserController {
     await createUserToken(user, req, res)
   }
 
-  static async check (req: Request, res: Response) {
+  static async checkIfUserIsAuthenticated (req: Request, res: Response) {
     interface JwtPayload {
       _id: string
     }
-
     let currentUser;
-
     if (req.headers.authorization) {
       const token = getToken(req)
       const { _id } = jwt.verify(token, 'dasecret') as JwtPayload
@@ -93,10 +91,8 @@ class UserController {
       if (currentUser) {
         currentUser.password = ''
       }
-    } else {
-      currentUser = null
     }
-
+    currentUser = null
     res.status(200).send(currentUser)
   }
 
