@@ -5,18 +5,15 @@ import { createUserToken } from '../helpers/create-user-token'
 import { getToken } from '../helpers/get-user-token'
 import { getUserByToken } from '../helpers/get-user-by-token'
 import { Request, Response } from 'express'
+import { checkForMissingFields } from '../helpers/check-for-missing-fields'
 
 class UserController {
   static async register (req: Request, res: Response) {
-    const fields = ['name', 'email', 'password', 'confirmpassword', 'phone', 'block', 'apartment']
-    const missingFields = []
-    for (const field of fields) {
-      if (!(field in req.body)) {
-        missingFields.push(` ${field}`)
-      }
-    }
-    if (missingFields.length > 0) {
-      return res.status(400).json({ message: `Failed to capture:${missingFields}.` })
+    let missingFields = checkForMissingFields(req.body, ['name', 'email', 'password', 'confirmpassword', 'phone', 'block', 'apartment'])
+    if (missingFields) {
+      return res.status(400).json({ 
+        message: `Please, inform the following fields: ${missingFields}.` 
+      })
     }
 
     const { name, email, password, confirmpassword, phone, block, apartment } = req.body
@@ -53,15 +50,11 @@ class UserController {
   }
 
   static async login (req: Request, res: Response) {
-    const fields = ["email", "password"]
-    const missingFields = []
-    for (const field of fields) {
-      if (!(field in req.body)) {
-        missingFields.push(` ${field}`)
-      }
-    }
-    if (missingFields.length > 0) {
-      return res.status(400).json({ message: `To log in, you must inform:${missingFields}.` })
+    let missingFields = checkForMissingFields(req.body,['email', 'password'])
+    if (missingFields) {
+      return res.status(400).json({ 
+        message: `To log in, you must inform: ${missingFields}.` 
+      })
     }
 
     const { email, password } = req.body
