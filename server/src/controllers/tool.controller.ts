@@ -71,12 +71,8 @@ class ToolController {
   static async showAllUserTools (req: Request, res: Response) {
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-
     const tools = await Tool.find({ 'owner._id': user._id }).sort('-createdAt')
-
-    res.status(200).json({
-      tools
-    })
+    return res.status(200).json({ tools })
   }
 
   static async showAllUserTakenTools (req: Request, res: Response) {
