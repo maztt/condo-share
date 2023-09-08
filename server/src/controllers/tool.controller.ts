@@ -96,30 +96,20 @@ class ToolController {
 
   static async removeToolById (req: Request, res: Response) {
     const id = req.params.id
-
     if (!ObjectId.isValid(id)) {
-      res.status(422).json({ message: 'Invalid ID!' })
-      return
+      return res.status(422).json({ message: 'Invalid ID!' })
     }
-
     const tool = await Tool.findOne({ _id: id })
-
     if (!tool) {
-      res.status(404).json({ message: 'Tool was not found.' })
-      return
+      return res.status(404).json({ message: 'Tool was not found.' })
     }
-
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-
     if (tool.owner._id.toString() !== user._id.toString()) {
-      res.status(422).json({ message: 'You do not own this tool.' })
-      return
+      return res.status(422).json({ message: 'You do not own this tool.' })
     }
-
     await Tool.findByIdAndDelete(id)
-
-    res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
+    return res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
   }
 
   static async editTool (req: Request, res: Response) {
