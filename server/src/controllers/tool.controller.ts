@@ -65,10 +65,7 @@ class ToolController {
 
   static async showAll (req: Request, res: Response) {
     const tools = await Tool.find().sort('-createdAt')
-
-    res.status(200).json({
-      tools: tools
-    })
+    return res.status(200).json({ tools: tools })
   }
 
   static async showAllUserTools (req: Request, res: Response) {
