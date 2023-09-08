@@ -10,25 +10,20 @@ class ToolController {
   static async create (req: Request, res: Response) {
     const name = req.body.name
     const category = req.body.category
-
     const available = true
-
     const images = req.files
 
     if (!name) {
-      res.status(422).json({ message: 'You must specify the tool name.'})
-      return
+      return res.status(400).json({ message: 'You must specify the tool name.'})
     }
 
     if (!category) {
-      res.status(422).json({ message: 'You must select the category group.'})
-      return
+      return res.status(400).json({ message: 'You must select the category group.'})
     }
 
     if (images) {
       if (images.length === 0) {
-        res.status(422).json({ message: 'You must upload at least one image of the tool.'})
-        return
+        return res.status(400).json({ message: 'You must upload at least one image of the tool.'})
       }
     }
 
@@ -57,15 +52,14 @@ class ToolController {
       })
     }
 
-
     try {
       const newTool = await tool.save()
-      res.status(201).json({
+      return res.status(201).json({
         message: 'The tool is now available for everyone.',
         newTool
       })
     } catch (error) {
-      res.status(500).json({ message: error })
+      return res.status(500).json({ message: error })
     }
   }
 
