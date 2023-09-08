@@ -148,38 +148,27 @@ class ToolController {
 
   static async schedule (req: Request, res: Response) {
     const id = req.params.id
-
     const tool = await Tool.findOne({ _id: id })
-
     if (!tool) {
-      res.status(404).json({ message: 'Tool was not found.'})
-      return
+      return res.status(404).json({ message: 'Tool was not found.'})
     }
-
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-
     if (tool.owner._id.equals(user._id)) {
-      res.status(422).json({ message: 'You can not claim your own tool.' })
-      return
+      return res.status(422).json({ message: 'You can not claim your own tool.' })
     }
-
     if (tool.taker) {
       if (tool.taker._id.equals(user._id)) {
-        res.status(422).json({ message: 'You have already claimed this tool.' })
-        return
+        return res.status(422).json({ message: 'You have already claimed this tool.' })
       }
     }
-
     tool.taker = {
       _id: user._id,
       name: user.name,
       image: user.image
     }
-
     await Tool.findByIdAndUpdate(id, tool)
-
-    res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
+    return res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
   }
 
   static async conclude (req: Request, res: Response) {
