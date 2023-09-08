@@ -97,7 +97,7 @@ class ToolController {
   static async removeToolById (req: Request, res: Response) {
     const id = req.params.id
     if (!ObjectId.isValid(id)) {
-      return res.status(422).json({ message: 'Invalid ID!' })
+      return res.status(400).json({ message: 'Invalid ID!' })
     }
     const tool = await Tool.findOne({ _id: id })
     if (!tool) {
@@ -106,7 +106,7 @@ class ToolController {
     const token = getToken(req)
     const user = await getUserByToken(token, res)
     if (tool.owner._id.toString() !== user._id.toString()) {
-      return res.status(422).json({ message: 'You do not own this tool.' })
+      return res.status(400).json({ message: 'You do not own this tool.' })
     }
     await Tool.findByIdAndDelete(id)
     return res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
@@ -124,13 +124,13 @@ class ToolController {
     const token = getToken(req)
     const user = await getUserByToken(token, res)
     if (tool.owner._id.toString() !== user._id.toString()) {
-      return res.status(422).json({ message: 'You do not own this tool.' })
+      return res.status(400).json({ message: 'You do not own this tool.' })
     }
     if (!name) {
-      return res.status(422).json({ message: 'You must specify the tool name.'})
+      return res.status(400).json({ message: 'You must specify the tool name.'})
     }
     if (!category) {
-      return res.status(422).json({ message: 'You must select the category group.'})
+      return res.status(400).json({ message: 'You must select the category group.'})
     }
     updatedData.name = name
     updatedData.category = category
@@ -155,11 +155,11 @@ class ToolController {
     const token = getToken(req)
     const user = await getUserByToken(token, res)
     if (tool.owner._id.equals(user._id)) {
-      return res.status(422).json({ message: 'You can not claim your own tool.' })
+      return res.status(400).json({ message: 'You can not claim your own tool.' })
     }
     if (tool.taker) {
       if (tool.taker._id.equals(user._id)) {
-        return res.status(422).json({ message: 'You have already claimed this tool.' })
+        return res.status(400).json({ message: 'You have already claimed this tool.' })
       }
     }
     tool.taker = {
