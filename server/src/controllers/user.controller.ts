@@ -27,7 +27,7 @@ class UserController {
 
     const userExists = await User.findOne({email})
     if (userExists) {
-      return res.status(422).json({ message: 'E-mail address is already in use.' })
+      return res.status(400).json({ message: 'E-mail address is already in use.' })
     }
 
     const salt = await bcrypt.genSalt(12)
@@ -67,12 +67,12 @@ class UserController {
     const { email, password } = req.body
     const user = await User.findOne({ email })
     if (!user) {
-      return res.status(422).json({ message: 'E-mail address is not registered in our database.' })
+      return res.status(400).json({ message: 'E-mail address is not registered in our database.' })
     }
 
     const checkPassword = await bcrypt.compare(password, user.password)
     if (!checkPassword) {
-      return res.status(422).json({ message: 'Invalid password.' })
+      return res.status(400).json({ message: 'Invalid password.' })
     }
     
     await createUserToken(user, req, res)
@@ -100,7 +100,7 @@ class UserController {
     const id = req.params.id
     const user = await User.findById(id).select('-password')
     if (!user) {
-      return res.status(422).json({ message: 'User not found.' })
+      return res.status(400).json({ message: 'User not found.' })
     }
     res.status(200).json({ user })
   }
@@ -120,7 +120,7 @@ class UserController {
 
     const emailAlreadyExists = await User.findOne({ email })
     if (user.email !== email && emailAlreadyExists) {
-      return res.status(422).json({ message: 'This e-mail is already registered to another account.' })
+      return res.status(400).json({ message: 'This e-mail is already registered to another account.' })
     }
     user.email = email
     
@@ -130,7 +130,7 @@ class UserController {
         const hashedPassword = bcrypt.hashSync(password, salt)
         user.password = hashedPassword
       }
-      return res.status(422).json({ message: 'The passwords are not matching.' })
+      return res.status(400).json({ message: 'The passwords are not matching.' })
     }
 
     try {
