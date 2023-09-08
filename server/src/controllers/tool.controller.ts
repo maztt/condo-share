@@ -114,41 +114,26 @@ class ToolController {
 
   static async editTool (req: Request, res: Response) {
     const id = req.params.id
-
     const { name, category, available } = req.body
     const images = req.files
-
     const updatedData: any = {}
-
     const tool = await Tool.findOne({ _id: id })
-
     if (!tool) {
-      res.status(404).json({ message: 'Tool was not found.'})
-      return
+      return res.status(404).json({ message: 'Tool was not found.'})
     }
-
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-
     if (tool.owner._id.toString() !== user._id.toString()) {
-      res.status(422).json({ message: 'You do not own this tool.' })
-      return
+      return res.status(422).json({ message: 'You do not own this tool.' })
     }
-
     if (!name) {
-      res.status(422).json({ message: 'You must specify the tool name.'})
-      return
-    } else {
-      updatedData.name = name
+      return res.status(422).json({ message: 'You must specify the tool name.'})
     }
-
     if (!category) {
-      res.status(422).json({ message: 'You must select the category group.'})
-      return
-    } else {
-      updatedData.category = category
+      return res.status(422).json({ message: 'You must select the category group.'})
     }
-
+    updatedData.name = name
+    updatedData.category = category
     if (images !== undefined) {
       if (Array.isArray(images)) {
         updatedData.images = []
@@ -157,10 +142,8 @@ class ToolController {
         })
       }
     }
-
     await Tool.findByIdAndUpdate(id, updatedData)
-
-    res.status(200).json({ message: 'The tool was updated.' })
+    return res.status(200).json({ message: 'The tool was updated.' })
   }
 
   static async schedule (req: Request, res: Response) {
