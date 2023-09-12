@@ -29,7 +29,7 @@ class ToolController {
 
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-    if (!user) return
+    if (!user) return res.status(500).json({ message: 'Failed to retrieve user, try relogging.' })
 
     const tool = new Tool({
       name,
