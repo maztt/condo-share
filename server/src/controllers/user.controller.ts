@@ -1,6 +1,6 @@
 import User from '../models/User'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { createUserToken } from '../helpers/create-user-token'
 import { getToken } from '../helpers/get-user-token'
 import { getUserByToken } from '../helpers/get-user-by-token'
@@ -67,20 +67,16 @@ class UserController {
     if (!checkPassword) {
       return res.status(400).json({ message: 'Invalid password.' })
     }
-    
+
     await createUserToken(user, req, res)
   }
 
   static async checkIfUserIsAuthenticated (req: Request, res: Response) {
-    interface JwtPayload {
-      _id: string
-    }
     let currentUser;
     if (req.headers.authorization) {
       const token = getToken(req)
-      const { _id } = jwt.verify(token, 'dasecret') as JwtPayload
-
-      currentUser = await User.findById(_id)
+      const data = jwt.verify(token, 'dasecret') as JwtPayload
+      currentUser = await User.findById(data.id)
       if (currentUser) {
         currentUser.password = ''
       }
