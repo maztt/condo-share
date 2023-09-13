@@ -9,66 +9,50 @@ import { checkForMissingFields } from '../helpers/check-for-missing-fields'
 
 class UserController {
   static async register (req: Request, res: Response) {
-    let missingFields = checkForMissingFields(req.body, ['name', 'email', 'password', 'confirmpassword', 'phone', 'block', 'apartment'])
-    if (missingFields) {
-      return res.status(400).json({ 
-        message: `Please, inform the following fields: ${missingFields}.` 
-      })
-    }
-
-    const { name, email, password, confirmpassword, phone, block, apartment } = req.body
-
-    if (password !== confirmpassword) {
-      return res.status(400).json({ message: 'The passwords are not matching.' })
-    }
-
-    const userExists = await User.findOne({email})
-    if (userExists) {
-      return res.status(400).json({ message: 'E-mail address is already in use.' })
-    }
-
-    const salt = await bcrypt.genSalt(12)
-    const hashedPassword = bcrypt.hashSync(password, salt)
-
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      phone,
-      block,
-      apartment
-    })
-
     try {
+      await checkForMissingFields(req.body, ['name', 'email', 'password', 'confirmpassword', 'phone', 'block', 'apartment'])
+      const { name, email, password, confirmpassword, phone, block, apartment } = req.body
+      if (password !== confirmpassword) {
+        return res.status(400).json({ message: 'The passwords are not matching.' })
+      }
+      const userExists = await User.findOne({email})
+      if (userExists) {
+        return res.status(400).json({ message: 'E-mail address is already in use.' })
+      }
+      const salt = await bcrypt.genSalt(12)
+      const hashedPassword = bcrypt.hashSync(password, salt)
+      const user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        phone,
+        block,
+        apartment
+      })
       const newUser = await user.save()
       await createUserToken(newUser, req, res)
     } catch (err) {
-      res.status(500).json({
-        message: err
-      })
+      res.status(500).json({ message: err })
     }
   }
 
   static async login (req: Request, res: Response) {
-    let missingFields = checkForMissingFields(req.body,['email', 'password'])
-    if (missingFields) {
-      return res.status(400).json({ 
-        message: `To log in, you must inform: ${missingFields}.` 
-      })
-    }
+    try {
+      await checkForMissingFields(req.body,['email', 'password'])
+      const { email, password } = req.body
+      const user = await User.findOne({ email })
+      if (!user) {
+        return res.status(400).json({ message: 'E-mail address is not registered in our database.' })
+      }
 
-    const { email, password } = req.body
-    const user = await User.findOne({ email })
-    if (!user) {
-      return res.status(400).json({ message: 'E-mail address is not registered in our database.' })
+      const checkPassword = await bcrypt.compare(password, user.password)
+      if (!checkPassword) {
+        return res.status(400).json({ message: 'Invalid password.' })
+      }
+      await createUserToken(user, req, res)
+    } catch (err) {
+      res.status(500).json({ message: err })
     }
-
-    const checkPassword = await bcrypt.compare(password, user.password)
-    if (!checkPassword) {
-      return res.status(400).json({ message: 'Invalid password.' })
-    }
-
-    await createUserToken(user, req, res)
   }
 
   static async checkIfUserIsAuthenticated (req: Request, res: Response) {
