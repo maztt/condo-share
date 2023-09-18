@@ -78,7 +78,7 @@
 - [ ] Add handler to ease application start
 - [ ] Change project logo to an english one
 - [X] Allow users (any) to navigate to home by the logo
-- [ ] Allow users (owners) to check who is claiming the tool
+- [X] Allow users (owners) to verify who is claiming the tool
 - [ ] Add timer to tool claiming
 - [ ] Allow users (takers) to unclaim tools before deadline
 ```
