@@ -60,7 +60,7 @@ function Profile() {
         msgType = 'error'
         return err.response.data
       })
-
+    
     setFlashMessage(data.message, msgType)
   }
 
@@ -69,8 +69,9 @@ function Profile() {
       <div className={styles.profile_header}>
         <h1>My profile</h1>
         {( user.image || preview ) && (
-          <RoundedImage src={preview ? URL.createObjectURL(preview) : `${process.env.REACT_APP_API}/images/users/${user.image}` } alt={user.name}/>
-        )}
+          <RoundedImage src={preview ? URL.createObjectURL(preview) : `${process.env.REACT_APP_API}/images/users/${user.image}` } alt="Profile photo"/>
+          )}
+          <h2>{(user.name)}</h2>
       </div>
       <form onSubmit={handleSubmit} className={formStyles.form_container}>
         <Input
@@ -123,17 +124,15 @@ function Profile() {
           text="Password"
           type="password"
           name="password"
-          placeholder="Pick a password"
+          placeholder="New password"
           handleOnChange={handleChange}
-          value={user.password || ''}
         />
         <Input
           text="Confirm your password"
           type="password"
           name="confirmpassword"
-          placeholder="Confirm the password you picked"
+          placeholder="Repeat the password"
           handleOnChange={handleChange}
-          value={user.confirmpassword || ''}
         />
         <input type="submit" value="Edit" />
       </form>
