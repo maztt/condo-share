@@ -102,7 +102,7 @@ function MyTools() {
                     </button>
                   </>
                 ) : (
-                  <p>This tool has already been claimed.</p>
+                  <p>Currently in use by {tool.taker.name}.</p>
                 )}
               </div>
             </div>
