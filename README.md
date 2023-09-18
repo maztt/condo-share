@@ -77,7 +77,7 @@
 - [ ] Migrate the application from JavaScript to TypeScript
 - [ ] Add handler to ease application start
 - [ ] Change project logo to an english one
-- [ ] Allow users (any) to navigate to home by the logo
+- [X] Allow users (any) to navigate to home by the logo
 - [ ] Allow users (owners) to check who is claiming the tool
 - [ ] Add timer to tool claiming
 - [ ] Allow users (takers) to unclaim tools before deadline

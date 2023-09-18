@@ -13,7 +13,9 @@ function Navbar () {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbar_logo}>
-        <img src={Logo} alt="CondoShare" />
+        <Link to="/">
+          <img src={Logo} alt="CondoShare" />
+        </Link>
       </div>
       <ul>
         { authentication ? (
