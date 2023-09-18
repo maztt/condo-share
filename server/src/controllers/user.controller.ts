@@ -65,7 +65,6 @@ class UserController {
         currentUser.password = ''
       }
     }
-    currentUser = null
     res.status(200).send(currentUser)
   }
 
