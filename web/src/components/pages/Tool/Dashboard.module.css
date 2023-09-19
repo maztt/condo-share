@@ -1,92 +1,94 @@
 .toolslist_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
 }
 
 .toolslist_header h1 {
-  margin: 0;
+    margin: 0;
 }
 
 .toolslist_header a {
-  text-decoration: none;
-  background-color: #16479d;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .5s;
-  padding: .5em .8em;
-  border-radius: 5px;
-  border: 2px solid #16479d;
+    text-decoration: none;
+    background-color: #16479d;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s;
+    padding: 0.5em 0.8em;
+    border-radius: 5px;
+    border: 2px solid #16479d;
 }
 
 .toolslist_header a:hover {
-  background-color: transparent;
-  color: #16479d;
+    background-color: transparent;
+    color: #16479d;
 }
 
 .toolslist_container {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .toolslist_row {
-  border-bottom: 1px solid #16479d;
-  padding: 1em;
-  margin: 1em;
-  display: flex;
-  align-items: center;
-  width: 100%;
+    border-bottom: 1px solid #16479d;
+    padding: 1em;
+    margin: 1em;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .toolslist_row img {
-  margin-right: 1em;
+    margin-right: 1em;
 }
 
 .toolslist_row span {
-  min-width: 100px;
+    min-width: 100px;
 }
 
 .actions {
-  margin-left: auto;
+    margin-left: auto;
 }
 
-.actions a, .actions button {
-  text-decoration: none;
-  background-color: #fff;
-  color: #16479d;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .5s;
-  padding: 7px 12px;
-  border-radius: 5px;
-  border: 2px solid #16479d;
-  font-size: 12px;
-  margin-left: 1em;
+.actions a,
+.actions button {
+    text-decoration: none;
+    background-color: #fff;
+    color: #16479d;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s;
+    padding: 7px 12px;
+    border-radius: 5px;
+    border: 2px solid #16479d;
+    font-size: 12px;
+    margin-left: 1em;
 }
 
-.actions a:hover, .actions button:hover {
-  background-color: #16479d;
-  color: #fff;
+.actions a:hover,
+.actions button:hover {
+    background-color: #16479d;
+    color: #fff;
 }
 
 .actions .conclude_btn {
-  color: #25b456;
-  border-color: #25b456;
+    color: #25b456;
+    border-color: #25b456;
 }
 
 .actions .conclude_btn:hover {
-  color: #FFF;
-  background-color: #25b456;
+    color: #fff;
+    background-color: #25b456;
 }
 
-/* MyTakings */
+/* MyClaimings */
 
 .contacts {
-  margin-left: 2em;
+    margin-left: 2em;
 }
 
 .contacts p {
-  margin-bottom: .5em;
+    margin-bottom: 0.5em;
 }
