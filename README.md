@@ -81,7 +81,7 @@
 - [X] Allow users (owners) to verify who is claiming the tool
 - [ ] Add timer to tool claiming
 - [ ] Allow users (takers) to unclaim tools before deadline
-- [ ] Gather "My Tools" and "My Takings" in a single page
+- [X] Gather "My Published Tools" and "My Claimings" in a single page
 - [ ] Create a visitors profile for users to check each other
 ```
 
