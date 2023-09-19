@@ -78,7 +78,7 @@ function MyTools() {
                 width="px75"
               />
               <span className="bold">{tool.name}</span>
-              {tool.available && 
+              {tool.available && tool.taker &&
                 (<span>{(tool.taker.name)} wants to claim it</span>)
               }
               
