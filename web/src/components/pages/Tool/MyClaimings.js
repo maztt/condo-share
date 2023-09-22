@@ -20,7 +20,7 @@ function MyClaimings() {
     return (
         <section>
             <div className={styles.toolslist_header}>
-                <h1>My Takings</h1>
+                <h1>My Claimings</h1>
             </div>
             <div className={styles.toolslist_container}>
                 {tools.length > 0 &&

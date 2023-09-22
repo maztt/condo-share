@@ -80,7 +80,7 @@
 - [X] Allow users (any) to navigate to home by the logo
 - [X] Allow users (owners) to verify who is claiming the tool
 - [ ] Add timer to tool claiming
-- [ ] Allow users (takers) to unclaim tools before deadline
+- [ ] Allow users (claimers) to unclaim tools before deadline
 - [X] Gather "My Published Tools" and "My Claimings" in a single page
 - [ ] Create a visitors profile for users to check each other
 ```
@@ -90,7 +90,7 @@
 ## [:key:] Running The Application <a name="-running-the-app">
 
 ```sh
-$ 
+$
 ```
 
 <br>

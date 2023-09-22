@@ -7,23 +7,23 @@ import { getToken } from '../helpers/get-user-token'
 const ObjectId = mongoose.Types.ObjectId
 
 class ToolController {
-  static async create (req: Request, res: Response) {
+  static async create(req: Request, res: Response) {
     const name = req.body.name
     const category = req.body.category
     const available = true
     const images = req.files
 
     if (!name) {
-      return res.status(400).json({ message: 'You must specify the tool name.'})
+      return res.status(400).json({ message: 'You must specify the tool name.' })
     }
 
     if (!category) {
-      return res.status(400).json({ message: 'You must select the category group.'})
+      return res.status(400).json({ message: 'You must select the category group.' })
     }
 
     if (images) {
       if (images.length === 0) {
-        return res.status(400).json({ message: 'You must upload at least one image of the tool.'})
+        return res.status(400).json({ message: 'You must upload at least one image of the tool.' })
       }
     }
 
@@ -63,38 +63,38 @@ class ToolController {
     }
   }
 
-  static async showAll (req: Request, res: Response) {
+  static async showAll(req: Request, res: Response) {
     const tools = await Tool.find().sort('-createdAt')
     return res.status(200).json({ tools: tools })
   }
 
-  static async showAllUserTools (req: Request, res: Response) {
+  static async showAllUserTools(req: Request, res: Response) {
     const token = getToken(req)
     const user = await getUserByToken(token, res)
     const tools = await Tool.find({ 'owner._id': user._id }).sort('-createdAt')
     return res.status(200).json({ tools })
   }
 
-  static async showAllUserTakenTools (req: Request, res: Response) {
+  static async showAllUserTakenTools(req: Request, res: Response) {
     const token = getToken(req)
     const user = await getUserByToken(token, res)
-    const tools = await Tool.find({ 'taker._id': user._id }).sort('-createdAt')
+    const tools = await Tool.find({ 'claimer._id': user._id }).sort('-createdAt')
     return res.status(200).json({ tools })
   }
 
-  static async getToolById (req: Request, res: Response) {
+  static async getToolById(req: Request, res: Response) {
     const id = req.params.id
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ message: 'Invalid ID!' })
     }
-    const tool = await Tool.findOne({_id: id})
+    const tool = await Tool.findOne({ _id: id })
     if (!tool) {
       return res.status(404).json({ message: 'Tool was not found.' })
     }
     return res.status(200).json({ tool: tool })
   }
 
-  static async removeToolById (req: Request, res: Response) {
+  static async removeToolById(req: Request, res: Response) {
     const id = req.params.id
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ message: 'Invalid ID!' })
@@ -112,14 +112,14 @@ class ToolController {
     return res.status(200).json({ message: 'Tool was successfuly removed from the system.' })
   }
 
-  static async editTool (req: Request, res: Response) {
+  static async editTool(req: Request, res: Response) {
     const id = req.params.id
     const { name, category, available } = req.body
     const images = req.files
     const updatedData: any = {}
     const tool = await Tool.findOne({ _id: id })
     if (!tool) {
-      return res.status(404).json({ message: 'Tool was not found.'})
+      return res.status(404).json({ message: 'Tool was not found.' })
     }
     const token = getToken(req)
     const user = await getUserByToken(token, res)
@@ -127,10 +127,10 @@ class ToolController {
       return res.status(400).json({ message: 'You do not own this tool.' })
     }
     if (!name) {
-      return res.status(400).json({ message: 'You must specify the tool name.'})
+      return res.status(400).json({ message: 'You must specify the tool name.' })
     }
     if (!category) {
-      return res.status(400).json({ message: 'You must select the category group.'})
+      return res.status(400).json({ message: 'You must select the category group.' })
     }
     updatedData.name = name
     updatedData.category = category
@@ -146,23 +146,23 @@ class ToolController {
     return res.status(200).json({ message: 'The tool was updated.' })
   }
 
-  static async schedule (req: Request, res: Response) {
+  static async schedule(req: Request, res: Response) {
     const id = req.params.id
     const tool = await Tool.findOne({ _id: id })
     if (!tool) {
-      return res.status(404).json({ message: 'Tool was not found.'})
+      return res.status(404).json({ message: 'Tool was not found.' })
     }
     const token = getToken(req)
     const user = await getUserByToken(token, res)
     if (tool.owner._id.equals(user._id)) {
       return res.status(400).json({ message: 'You can not claim your own tool.' })
     }
-    if (tool.taker) {
-      if (tool.taker._id.equals(user._id)) {
+    if (tool.claimer) {
+      if (tool.claimer._id.equals(user._id)) {
         return res.status(400).json({ message: 'You have already claimed this tool.' })
       }
     }
-    tool.taker = {
+    tool.claimer = {
       _id: user._id,
       name: user.name,
       image: user.image
@@ -171,11 +171,11 @@ class ToolController {
     return res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
   }
 
-  static async conclude (req: Request, res: Response) {
+  static async conclude(req: Request, res: Response) {
     const id = req.params.id
     const tool = await Tool.findOne({ _id: id })
     if (!tool) {
-      return res.status(404).json({ message: 'Tool was not found.'})
+      return res.status(404).json({ message: 'Tool was not found.' })
     }
     const token = getToken(req)
     const user = await getUserByToken(token, res)
@@ -184,7 +184,7 @@ class ToolController {
     }
     tool.available = false
     await Tool.findByIdAndUpdate(id, tool)
-    return res.status(200).json({ message: `You have confirmed the claim from ${tool.taker.name}` })
+    return res.status(200).json({ message: `You have confirmed the claim from ${tool.claimer.name}` })
   }
 }
 

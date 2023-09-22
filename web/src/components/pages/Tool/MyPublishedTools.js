@@ -77,13 +77,13 @@ function MyPublishedTools() {
                 alt={tool.name}
                 width="px75" />
               <span className="bold">{tool.name}</span>
-              {tool.available && tool.taker &&
-                (<span>{(tool.taker.name)} wants to claim it</span>)}
+              {tool.available && tool.claimer &&
+                (<span>{(tool.claimer.name)} wants to claim it</span>)}
 
               <div className={styles.actions}>
                 {tool.available ? (
                   <>
-                    {tool.taker && (
+                    {tool.claimer && (
                       <button className={styles.conclude_btn} onClick={() => {
                         confirmClaiming(tool._id)
                       } }>
@@ -100,7 +100,7 @@ function MyPublishedTools() {
                     </button>
                   </>
                 ) : (
-                  <p>Currently in use by {tool.taker.name}.</p>
+                  <p>Currently in use by {tool.claimer.name}.</p>
                 )}
               </div>
             </div>

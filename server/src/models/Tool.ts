@@ -21,7 +21,7 @@ const Tool = db.model(
         type: Boolean
       },
       owner: Object,
-      taker: Object
+      claimer: Object
     },
     { timestamps: true }
   )
