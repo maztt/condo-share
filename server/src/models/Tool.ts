@@ -20,8 +20,14 @@ const Tool = db.model(
       available: {
         type: Boolean
       },
-      owner: Object,
-      claimer: Object
+      owner: {
+        type: Object,
+        ref: 'User'
+      },
+      claimer: {
+        type: Object,
+        ref: 'User'
+      }
     },
     { timestamps: true }
   )

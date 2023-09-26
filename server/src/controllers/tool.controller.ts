@@ -3,6 +3,7 @@ import Tool from '../models/Tool'
 import { Request, Response } from 'express'
 import { getUserByToken } from '../helpers/get-user-by-token'
 import { getToken } from '../helpers/get-user-token'
+import User from '../models/User'
 
 const ObjectId = mongoose.Types.ObjectId
 
@@ -36,15 +37,10 @@ class ToolController {
       category,
       images: [],
       available,
-      owner: {
-        _id: user._id,
-        name: user.name,
-        image: user.image,
-        phone: user.phone,
-        block: user.block,
-        apartment: user.apartment
-      }
+      owner: await User.findOne(user._id)
     })
+
+    console.log(tool)
 
     if (Array.isArray(images)) {
       images.map((image: { filename: any }) => {
@@ -64,7 +60,7 @@ class ToolController {
   }
 
   static async showAll(req: Request, res: Response) {
-    const tools = await Tool.find().sort('-createdAt')
+    const tools = await Tool.find().sort('-createdAt').populate('owner');
     return res.status(200).json({ tools: tools })
   }
 
@@ -162,11 +158,7 @@ class ToolController {
         return res.status(400).json({ message: 'You have already claimed this tool.' })
       }
     }
-    tool.claimer = {
-      _id: user._id,
-      name: user.name,
-      image: user.image
-    }
+    tool.claimer = await User.findById(user._id)
     await Tool.findByIdAndUpdate(id, tool)
     return res.status(200).json({ message: `You have claimed the tool from ${tool.owner.name}!` })
   }
